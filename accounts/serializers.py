@@ -5,4 +5,4 @@ from accounts.models import User
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['uuid', 'email','name', 'date_of_birth', 'created_at','updated_at']
+        fields = '__all__'

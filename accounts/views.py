@@ -20,9 +20,3 @@ class UserList(generics.ListCreateAPIView):
 class UserDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-
-@api_view(['GET'])
-def api_root(request, format=None):
-    return Response({
-        'users':('user-list', request, format),
-    })
