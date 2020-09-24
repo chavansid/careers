@@ -3,7 +3,9 @@ from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 from accounts.UserManager import UserManager
 from django.contrib.auth.models import PermissionsMixin
-
+from pygments.lexers import get_lexer_by_name
+from pygments.formatters.html import HtmlFormatter
+from pygments import highlight
 # Create your models here.
 
 class User(AbstractBaseUser,PermissionsMixin):
@@ -27,3 +29,4 @@ class User(AbstractBaseUser,PermissionsMixin):
     def __str__(self):
         return self.email
 
+   

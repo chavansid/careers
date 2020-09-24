@@ -3,16 +3,12 @@ from django.contrib.auth.models import BaseUserManager
 from django.utils.translation import ugettext_lazy as _
 import accounts.models
 class UserManager(BaseUserManager):
-    def create_user(self,email,password=None,**extra_fields):
+    def create_user(self, email, password, **extra_fields):
         if not email:
-            raise ValueError("Email is required")
-        
-        user = self.model(
-            email    = self.normalize_email(email),
-        )
-
+            raise ValueError(('The Mobile Number must be set'))
+        user = self.model(email=email, **extra_fields)
         user.set_password(password)
-        user.save(using=self._db)
+        user.save()
         return user
 
     def create_superuser(self, email, password,**extra_fields):

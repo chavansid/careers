@@ -20,7 +20,7 @@ from . import views
 app_name='accounts'
 
 urlpatterns = [
-    path('', views.api_root),
+    path('',views.api_root),
     path('users/', views.UserList.as_view(),name='user-list'),
     path('users/<int:pk>/', views.UserDetail.as_view(),name='user-detail'),
 ]

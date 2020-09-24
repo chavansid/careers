@@ -8,6 +8,7 @@ from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
+from rest_framework import permissions
 # Create your views here.
 
 
@@ -23,5 +24,5 @@ class UserDetail(generics.RetrieveUpdateDestroyAPIView):
 @api_view(['GET'])
 def api_root(request, format=None):
     return Response({
-        'users': reverse('user-list',request=request, format=format),
+        'users':('user-list', request, format),
     })
