@@ -29,4 +29,13 @@ class User(AbstractBaseUser,PermissionsMixin):
     def __str__(self):
         return self.email
 
-   
+
+class profile(models.Model):
+    user               = models.OneToOneField(User,on_delete=models.CASCADE)
+    selfie_image       = models.ImageField(default='default.png',upload_to='profile_pics')
+    bio                = models.CharField(default=None,max_length=500)
+    headline           = models.CharField(default=None,max_length=100)
+
+    def __str__(self):
+        return f'{self.user.email}'
+
