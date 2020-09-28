@@ -30,7 +30,7 @@ class User(AbstractBaseUser,PermissionsMixin):
         return self.email
 
 
-class profile(models.Model):
+class Profile(models.Model):
     user               = models.OneToOneField(User,on_delete=models.CASCADE)
     selfie_image       = models.ImageField(default='default.png',upload_to='profile_pics')
     bio                = models.CharField(default=None,max_length=500)
