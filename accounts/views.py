@@ -32,6 +32,20 @@ class UserList(generics.ListCreateAPIView):
 class UserDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
+    def put(self, request,pk,format=None):
+        user = self.get_object(pk)
+        serializer = UserSerializer(user, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"status":"true","message":"data updated succesfully.","data":serializer.data})
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk , format=None):
+        user = self.get_object(pk)
+        user.delete()
+        return Response({"status":"true","message":"data Deleted succesfully."},status=status.HTTP_204_NO_CONTENT)
+   
    
    
 class ProfileUpdate(generics.RetrieveUpdateDestroyAPIView):

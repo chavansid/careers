@@ -13,7 +13,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     def validated_password(self,value):
         return make_password(value)
-    profile = ProfileSerializer(required=False)
+    profile = ProfileSerializer(required=True)
     class Meta:
         model = User
         fields = '__all__'
@@ -32,17 +32,4 @@ class UserSerializer(serializers.ModelSerializer):
             
         )
         return user
-    
-    def put(self, request, uuid, format=None):
-        user = self.get_object(uuid)
-        serializer = UserSerializer(user, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response({"status":"true","message":"data updated succesfully.","data":serializer.data})
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    def delete(self, request, uuid, format=None):
-        user = self.get_object(uuid)
-        user.delete()
-        return Response({"status":"true","message":"data Deleted succesfully."},status=status.HTTP_204_NO_CONTENT)
-        
+         
