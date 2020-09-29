@@ -1,6 +1,8 @@
 
 from rest_framework import serializers
 from accounts.models import User , Profile
+from django.contrib.auth.hashers import make_password
+
 
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
@@ -8,7 +10,9 @@ class ProfileSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class UserSerializer(serializers.ModelSerializer):
-    profile = ProfileSerializer(required=True)
+    def validated_password(self,value):
+        return make_password(value)
+    profile_ser = ProfileSerializer(required=False)
     class Meta:
         model = User
         fields = '__all__'
@@ -17,9 +21,8 @@ class UserSerializer(serializers.ModelSerializer):
         user = User.objects.create(
             email = validated_data['email'],
         )
-
-        profile_data = validated_data.pop('profile')
-        profile = Profile.objects.create(
+        profile_data = validated_data.pop('profile_ser')
+        Profile.objects.create(
             user = user,
             selfie_image = profile_data['selfie_image'],
             bio = profile_data['bio'],

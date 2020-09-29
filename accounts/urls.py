@@ -21,7 +21,5 @@ app_name='accounts'
 
 urlpatterns = [
     path('users/', views.UserList.as_view(),name='user-list'),
-    path('users/<int:pk>', views.UserDetail.as_view(),name='user-create'),
-    path('users/update/<int:pk>', views.UserDetail.as_view(),name='user-update'),
-    path('users/delete/<int:pk>', views.UserDetail.as_view(),name='user-delete'),
+    path('users/<int:pk>/', views.UserDetail.as_view(),name='user-delete'),
 ]
