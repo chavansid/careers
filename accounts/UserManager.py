@@ -10,10 +10,6 @@ class UserManager(BaseUserManager):
         user.set_password(password)
        
         user.save()
-        profile = models.Profile(
-            user=user,
-        )
-        profile.save()
         return user
 
     def create_superuser(self, email, password,**extra_fields):

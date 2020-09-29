@@ -40,10 +40,29 @@ class Profile(BaseModel):
     headline           = models.CharField(default=None,max_length=100,null=True)
 
     def __str__(self):
-        return f'{self.user.email}'
+        return f'{self.user.email} Profile'
 
 class Education(BaseModel):
-    pass
+    user               = models.OneToOneField(User,on_delete=models.CASCADE)
+    school             = models.CharField(default=None,max_length=200)
+    degree             = models.CharField(default=None,max_length=200)
+    field_of_study     = models.CharField(default=None,max_length=200)
+    start_date         = models.DateField(verbose_name='start_date',default=None,max_length=200)
+    end_date           = models.DateField(verbose_name='end_date',default=None,max_length=200)
+    grade              = models.CharField(default=None,max_length=200)
+    description        = models.TextField(default=None,max_length=500)
+
+    def __str__(self):
+        return f'{self.user.email}'
+
 
 class Experience(BaseModel):
-    pass
+    user               = models.OneToOneField(User,on_delete=models.CASCADE)
+    title              = models.CharField(default=None,max_length=200)
+    emp_type           = models.CharField(default=None,max_length=200)
+    company_name       = models.CharField(default=None,max_length=200)
+    location           = models.CharField(default=None,max_length=200)
+    description        = models.TextField(default=None,max_length=500)
+
+    def __str__(self):
+        return f'{self.user.email}'
