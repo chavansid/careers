@@ -1,6 +1,6 @@
 
 from rest_framework import serializers
-from accounts.models import User , Profile
+from accounts.models import User , Profile , Experience , Education , Feed
 from django.contrib.auth.hashers import make_password
 from rest_framework.response import Response
 from rest_framework import status
@@ -9,6 +9,16 @@ class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
         fields = '__all__'
+
+class EducationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Education
+        fields = "__all__"
+
+class ExperienceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Experience
+        fields = "__all__"
 
 class UserSerializer(serializers.ModelSerializer):
     def validated_password(self,value):
@@ -32,4 +42,8 @@ class UserSerializer(serializers.ModelSerializer):
             
         )
         return user
-         
+
+class FeedSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Feed
+        fields = '__all__'

@@ -43,7 +43,7 @@ class Profile(BaseModel):
         return f'{self.user.email} Profile'
 
 class Education(BaseModel):
-    user               = models.OneToOneField(User,on_delete=models.CASCADE)
+    user               = models.ForeignKey(User, on_delete=models.CASCADE)
     school             = models.CharField(default=None,max_length=200)
     degree             = models.CharField(default=None,max_length=200)
     field_of_study     = models.CharField(default=None,max_length=200)
@@ -53,11 +53,11 @@ class Education(BaseModel):
     description        = models.TextField(default=None,max_length=500)
 
     def __str__(self):
-        return f'{self.user.email}'
+        return f'{self.user.email} Education'
 
 
 class Experience(BaseModel):
-    user               = models.OneToOneField(User,on_delete=models.CASCADE)
+    user               = models.ForeignKey(User, on_delete=models.CASCADE)
     title              = models.CharField(default=None,max_length=200)
     emp_type           = models.CharField(default=None,max_length=200)
     company_name       = models.CharField(default=None,max_length=200)
@@ -65,4 +65,10 @@ class Experience(BaseModel):
     description        = models.TextField(default=None,max_length=500)
 
     def __str__(self):
-        return f'{self.user.email}'
+        return f'{self.user.email} Experience'
+
+class Feed(BaseModel):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    feed = models.TextField(default=False)
+    def __str__(self):
+        return f'{self.user.email} Feed'
