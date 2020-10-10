@@ -12,14 +12,18 @@ from rest_framework import permissions
 from rest_framework import status
 from rest_framework.viewsets import ModelViewSet
 from .Baseview import BaseDetails
+from .BaseModelViewset import BaseModelViewSet
 from django.core.mail import send_mail
 from django.conf import settings
 from .pagination import PaginationHandlerMixin
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.generics import ListAPIView
+from rest_framework import viewsets
 # Create your views here.
 
 
-class UserList(generics.ListCreateAPIView): 
+'''class UserList(generics.ListCreateAPIView): 
     queryset = User.objects.all()
     serializer_class = UserSerializer
     def get(self, request, **kwargs):
@@ -91,29 +95,47 @@ class Feedpage(generics.RetrieveUpdateDestroyAPIView):
         serializer = FeedSerializer(fed, many=True)
         return Response({"status": "true", "message": "data Retrieve successfully.", "data": serializer.data})
 
+class ProfileView(ListAPIView):
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
+    authentication_classes = (TokenAuthentication,)
+    pagination_class = PageNumberPagination'''
+
+class UserViewSet(BaseModelViewSet):
+    serializer_class = UserSerializer
+    model = User
+    queryset = User.objects.all()
+
+class ProfileViewSet(BaseModelViewSet):
+    serializer_class = ProfileSerializer
+    model = Profile
+    queryset = Profile.objects.all()
+
+class EducationViewSet(BaseModelViewSet):
+    serializer_class = EducationSerializer
+    model = Education
+    queryset = Education.objects.all()
+
+class ExperienceViewSet(BaseModelViewSet):
+    serializer_class = ExperienceSerializer
+    model = Experience
+    queryset = Experience.objects.all()
+
+class FeedViewSet(BaseModelViewSet):
+    serializer_class = FeedSerializer
+    model = Feed
+    queryset = Feed.objects.all()
+
+
 def emailconf(request):
 
     subject = 'Thank you for registering'
-    message = 'It means a world to us'
+    message = 'welcome'
     email_from = settings.EMAIL_HOST_USER
-    recipient_list = ['vineeth.t@engineerbabu.in']
+    recipient_list = ['siddhesh.ch@engineerbabu.in']
 
     send_mail(subject,message,email_from, recipient_list)
 
     return HttpResponseRedirect('http://127.0.0.1:8000/users/')
 
 
-class BasicPagination(PageNumberPagination):
-    page_size_query_param = 'limit'
-class MyListAPI(APIView, PaginationHandlerMixin):
-    pagination_class = BasicPagination
-    serializer_class = ProfileSerializer
-    def get(self, request, format=None, *args, **kwargs):
-        instance = Dataset.objects.all()
-        page = self.paginate_queryset(instance)
-        if page is not None:
-            serializer = self.get_paginated_response(self.serializer_class(page,
- many=True).data)
-        else:
-            serializer = self.serializer_class(instance, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
