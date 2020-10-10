@@ -44,13 +44,13 @@ class Profile(BaseModel):
 
 class Education(BaseModel):
     user               = models.ForeignKey(User, on_delete=models.CASCADE)
-    school             = models.CharField(default=None,max_length=200)
-    degree             = models.CharField(default=None,max_length=200)
-    field_of_study     = models.CharField(default=None,max_length=200)
-    start_date         = models.DateField(verbose_name='start_date',default=None,max_length=200)
-    end_date           = models.DateField(verbose_name='end_date',default=None,max_length=200)
-    grade              = models.CharField(default=None,max_length=200)
-    description        = models.TextField(default=None,max_length=500)
+    school             = models.CharField(blank=True,max_length=200)
+    degree             = models.CharField(blank=True,max_length=200)
+    field_of_study     = models.CharField(blank=True,max_length=200)
+    start_date         = models.DateField(verbose_name='start_date',blank=True,max_length=200)
+    end_date           = models.DateField(verbose_name='end_date',blank=True,max_length=200)
+    grade              = models.CharField(blank=True,max_length=200)
+    description        = models.TextField(blank=True,max_length=500)
 
     def __str__(self):
         return f'{self.user.email} Education'
@@ -58,11 +58,11 @@ class Education(BaseModel):
 
 class Experience(BaseModel):
     user               = models.ForeignKey(User, on_delete=models.CASCADE)
-    title              = models.CharField(default=None,max_length=200)
-    emp_type           = models.CharField(default=None,max_length=200)
-    company_name       = models.CharField(default=None,max_length=200)
-    location           = models.CharField(default=None,max_length=200)
-    description        = models.TextField(default=None,max_length=500)
+    title              = models.CharField(blank=True,max_length=200)
+    emp_type           = models.CharField(blank=True,max_length=200)
+    company_name       = models.CharField(blank=True,max_length=200)
+    location           = models.CharField(blank=True,max_length=200)
+    description        = models.TextField(blank=True,max_length=500)
 
     def __str__(self):
         return f'{self.user.email} Experience'
