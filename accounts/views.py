@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from datetime import datetime,date
 from django.http import HttpResponse
 from accounts.models import User , Profile , Education ,Experience ,Feed
 from accounts.serializers import UserSerializer , ProfileSerializer , EducationSerializer , ExperienceSerializer ,FeedSerializer
@@ -19,113 +20,56 @@ from .pagination import PaginationHandlerMixin
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.generics import ListAPIView
-from rest_framework import viewsets
+from rest_framework import viewsets, filters
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter
 # Create your views here.
-
-
-'''class UserList(generics.ListCreateAPIView): 
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-    def get(self, request, **kwargs):
-        user = User.objects.all()
-        serializer = UserSerializer(user, many = True)
-        return Response({"status": "true", "message": "data Retrieve successfully.", "data": serializer.data})
-    
-    def post(self, request, format=None):
-        serializer = UserSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response({"status":"true","message":"data Posted succesfully.","data":{"uuid": serializer.data['uuid']}}, status=status.HTTP_201_CREATED)
-        return Response({'message': 'user with this email already exist',}, status=status.HTTP_400_BAD_REQUEST)
-
-class UserDetails(BaseDetails):
-    model_class = User
-    serializer_class = UserSerializer
-    head = "user"
-
-class ProfileDetail(BaseDetails):
-    model_class = Profile
-    serializer_class = ProfileSerializer
-    head = "profile"
-
-class ProfileList(generics.ListCreateAPIView):
-    queryset = Profile.objects.all()
-    serializer_class = ProfileSerializer
-
-    def get(self, request, **kwargs):
-        profile = Profile.objects.all()
-        serializer = ProfileSerializer(profile, many = True)
-        return Response({"status": "true", "message": "data Retrieve successfully.", "data": serializer.data})
-
-class EducationList(generics.ListCreateAPIView):
-    queryset = Education.objects.all()
-    serializer_class = EducationSerializer
-    
-    def get(self, request, **kwargs):
-        education = Education.objects.all()
-        serializer = EducationSerializer(education, many = True)
-        return Response({"status": "true", "message": "data Retrieve successfully.", "data": serializer.data})
-
-
-class EducationDetail(BaseDetails):
-    model_class = Education
-    serializer_class = EducationSerializer
-    head = "education"
-
-class ExperienceList(generics.ListCreateAPIView):
-    queryset = Experience.objects.all()
-    serializer_class = ExperienceSerializer
-
-    def get(self, request, **kwargs):
-        experience = Experience.objects.all()
-        serializer = ExperienceSerializer(experience, many = True)
-        return Response({"status": "true", "message": "data Retrieve successfully.", "data": serializer.data})
-
-class ExperienceDetail(BaseDetails):
-    model_class = Experience
-    serializer_class = ExperienceSerializer
-    head = "experience"
-
-class Feedpage(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Feed.objects.all()
-    serializer_class = FeedSerializer
-
-    def get(self, request, **kwargs):
-        fed = Feed.objects.all()
-        serializer = FeedSerializer(fed, many=True)
-        return Response({"status": "true", "message": "data Retrieve successfully.", "data": serializer.data})
-
-class ProfileView(ListAPIView):
-    queryset = Profile.objects.all()
-    serializer_class = ProfileSerializer
-    authentication_classes = (TokenAuthentication,)
-    pagination_class = PageNumberPagination'''
 
 class UserViewSet(BaseModelViewSet):
     serializer_class = UserSerializer
     model = User
     queryset = User.objects.all()
+    pagination_class = PageNumberPagination
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['name','email','Profile__gender']
+    head = "user"
 
 class ProfileViewSet(BaseModelViewSet):
+    filter_backends = [filters.SearchFilter, DjangoFilterBackend,]
+    filter_fields = ['User__created_at']
+    search_fields = ['bio', 'city']
     serializer_class = ProfileSerializer
     model = Profile
     queryset = Profile.objects.all()
+    pagination_class = PageNumberPagination
+    head = "profile"
+   
 
 class EducationViewSet(BaseModelViewSet):
+    filter_backends = [filters.SearchFilter, DjangoFilterBackend, ]
+    filter_fields = ['start_date', 'end_date']
+    search_fields = ['school', 'degree']
     serializer_class = EducationSerializer
     model = Education
     queryset = Education.objects.all()
+    pagination_class = PageNumberPagination
+    head = "education"
 
 class ExperienceViewSet(BaseModelViewSet):
+    filter_backends = [filters.SearchFilter, DjangoFilterBackend,]
+    filter_fields = ['start_date', 'end_date']
+    search_fields = ['title', 'company_name']
     serializer_class = ExperienceSerializer
     model = Experience
     queryset = Experience.objects.all()
+    pagination_class = PageNumberPagination
+    head = "experience"
 
 class FeedViewSet(BaseModelViewSet):
     serializer_class = FeedSerializer
     model = Feed
     queryset = Feed.objects.all()
-
+    pagination_class = PageNumberPagination
 
 def emailconf(request):
 

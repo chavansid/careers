@@ -38,6 +38,12 @@ class Profile(BaseModel):
     selfie_image       = models.ImageField(default='default.png',upload_to='profile_pics',null=True)
     bio                = models.CharField(default=None,max_length=500,null=True)
     headline           = models.CharField(default=None,max_length=100,null=True)
+    GENDER_CHOICES = (
+        ('M', 'Male'),
+        ('F', 'Female'),
+    )
+    gender             = models.CharField(blank=True,max_length=1,choices=GENDER_CHOICES )
+    city               = models.CharField(blank=True,max_length=60)
 
     def __str__(self):
         return f'{self.user.email} Profile'
@@ -58,11 +64,13 @@ class Education(BaseModel):
 
 class Experience(BaseModel):
     user               = models.ForeignKey(User, on_delete=models.CASCADE)
-    title              = models.CharField(blank=True,max_length=200)
-    emp_type           = models.CharField(blank=True,max_length=200)
-    company_name       = models.CharField(blank=True,max_length=200)
-    location           = models.CharField(blank=True,max_length=200)
-    description        = models.TextField(blank=True,max_length=500)
+    title              = models.CharField(max_length=200)
+    emp_type           = models.CharField(max_length=200)
+    start_date         = models.DateField(verbose_name='start_date',max_length=200)
+    end_date           = models.DateField(verbose_name='end_date',max_length=200)
+    company_name       = models.CharField(max_length=200)
+    location           = models.CharField(max_length=200)
+    description        = models.TextField(max_length=500)
 
     def __str__(self):
         return f'{self.user.email} Experience'
